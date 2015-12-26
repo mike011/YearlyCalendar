@@ -158,13 +158,13 @@ public class Reporter {
         setValue(Integer.parseInt(value), x, y, intFormat);
     }
 
-    private XCell setString(String value, int x, int y) {
+    XCell setString(String value, int x, int y) {
         XCell xCell = getCell(x, y);
         xCell.setFormula(value);
         return xCell;
     }
 
-    private void setBoldedString(String value, int x, int y) throws Exception {
+    void setBoldedString(String value, int x, int y) throws Exception {
         XCell xCell = setString(value, x, y);
         XPropertySet xPropSet = UnoRuntime.queryInterface(
                 com.sun.star.beans.XPropertySet.class, xCell);
@@ -218,7 +218,7 @@ public class Reporter {
         }
     }
 
-    private void setWidth() throws WrappedTargetException,
+    void setWidth() throws WrappedTargetException,
             IndexOutOfBoundsException, UnknownPropertyException,
             PropertyVetoException, IllegalArgumentException {
         XColumnRowRange columnRowRange = UnoRuntime.queryInterface(
@@ -233,44 +233,5 @@ public class Reporter {
         }
     }
 
-    public static void main(String args[]) throws Exception {
-        Reporter reporter = new Reporter();
-        reporter.setWidth();
-        Calendar calendar = new Calendar();
-        List<Event> events = getEvents();
-        highlightPoints(calendar, events);
-        addPoints(reporter, calendar);
-    }
-
-    private static List<Event> getEvents() {
-        List<String> file = LoadFile.load("./test/sample.csv");
-        List<Event> events = new ArrayList<Event>();
-        for (int i = 1; i < file.size(); i++) {
-            String s = file.get(i);
-            events.add(new Event(s));
-        }
-        return events;
-    }
-
-    private static void highlightPoints(Calendar calendar, List<Event> events) {
-        for (Event e : events) {
-            calendar.highlight(e.getStart(), e.getTitle());
-        }
-    }
-
-    private static void addPoints(Reporter reporter, Calendar calendar)
-            throws Exception {
-        List<Point> pts = calendar.getDays();
-        int y = 0;
-        for (Point p : pts) {
-            if (p.isHighlighted()) {
-                reporter.setBoldedString(p.value, p.x, p.y);
-                reporter.setString(p.value, 7 * 3 + 2 + 2, y);
-                reporter.setString(p.description, 7 * 3 + 2 + 3, y++);
-            } else {
-                reporter.setString(p.value, p.x, p.y);
-            }
-        }
-    }
-
+    
 }
