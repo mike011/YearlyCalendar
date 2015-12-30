@@ -7,7 +7,7 @@ import ca.charland.calendar.Event;
 import ca.charland.io.LoadFile;
 
 public class ReportMaker {
-	
+
 	private List<Event> events;
 	private static Calendar calendar;
 
@@ -15,7 +15,7 @@ public class ReportMaker {
 		ReportMaker maker = new ReportMaker();
 		maker.getEvents("./test/sample.csv");
 		maker.highlightPoints();
-		
+
 		Reporter report = new Reporter();
 		report.setWidth();
 		maker.addPoints(report);
@@ -24,11 +24,11 @@ public class ReportMaker {
 	List<Event> getEvents(String eventsFilename) {
 		List<String> eventsFileContents = LoadFile.load(eventsFilename);
 		List<String> ignoreList = LoadFile.load("./src/ignore.txt");
-		List<Event> events = new ArrayList<Event>();
+		events = new ArrayList<Event>();
 		for (int i = 1; i < eventsFileContents.size(); i++) {
 			String s = eventsFileContents.get(i);
 			Event e = new Event(s);
-			if(!ignoreList.contains(e.getTitle())) {
+			if (!ignoreList.contains(e.getTitle())) {
 				events.add(e);
 			}
 		}
@@ -37,13 +37,14 @@ public class ReportMaker {
 
 	private void highlightPoints() {
 		calendar = new Calendar();
-		for (Event e : events) {
-			calendar.highlight(e.getStart(), e.getTitle());
+		if (events != null) {
+			for (Event e : events) {
+				calendar.highlight(e.getStart(), e.getTitle());
+			}
 		}
 	}
 
-	private void addPoints(Reporter reporter)
-			throws Exception {
+	private void addPoints(Reporter reporter) throws Exception {
 		List<Point> pts = calendar.getDays();
 		int y = 0;
 		for (Point p : pts) {
