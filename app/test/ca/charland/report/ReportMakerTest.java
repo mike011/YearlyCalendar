@@ -16,7 +16,7 @@ public class ReportMakerTest {
     @Test
     public void testGetEvents() throws Exception {
         ReportMaker rm = new ReportMaker(ReportMaker.getEventsFromFile("./test/sample.csv"));
-        assertEquals(154, rm.getEvents().size());
+        assertEquals(48, rm.getEvents().size());
     }
 
     @Test

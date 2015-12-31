@@ -23,7 +23,7 @@ public class EventTest {
     
     @Test
     public void getStart() {
-        assertDate("1/1/16 12:00 AM", e.getStart());
+        assertDate("01/01/16 12:00 AM", e.getStart());
     }
 
     private void assertDate(String string, Date d) {
@@ -33,7 +33,7 @@ public class EventTest {
     
     @Test
     public void getEnd() {
-        assertDate("1/2/16 12:00 AM", e.getEnd());
+        assertDate("02/01/16 12:00 AM", e.getEnd());
     }
     
     @Test
