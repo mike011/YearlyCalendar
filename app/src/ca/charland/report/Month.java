@@ -78,7 +78,7 @@ public class Month {
 
     private List<Point> populateCalendarPoints() {
         List<Point> pts = new ArrayList<Point>();
-        pts.add(new Point(startX, startY, name.toString()));
+        pts.add(new Point(startX, startY, name, name.toString()));
         addWeekDays(pts);
         addDays(pts);
         return pts;
@@ -87,7 +87,7 @@ public class Month {
     private void addWeekDays(List<Point> pts) {
         int x = startX;
         for (WeekDay w : WeekDay.values()) {
-            pts.add(new Point(x++, startY + 1, w.toString()));
+            pts.add(new Point(x++, startY + 1, name, w.toString()));
         }
     }
 
@@ -96,7 +96,7 @@ public class Month {
         int y = startY + 2;
         int day = 1;
         while (day <= name.getDays()) {
-            pts.add(new Point(x++, y, day++));
+            pts.add(new Point(x++, y, name, day++));
             if (x - startX == 7) {
                 x = startX;
                 y += 1;

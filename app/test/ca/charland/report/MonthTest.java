@@ -43,18 +43,19 @@ public class MonthTest {
                 .getCalendarPoints();
         assertFalse(pts.isEmpty());
         int p = 0;
-        assertEquals(new Point(0, 0, "January"), pts.get(p++));
-        assertEquals(new Point(0, 1, "Su"), pts.get(p++));
-        assertEquals(new Point(1, 1, "M"), pts.get(p++));
-        assertEquals(new Point(2, 1, "Tu"), pts.get(p++));
-        assertEquals(new Point(3, 1, "W"), pts.get(p++));
-        assertEquals(new Point(4, 1, "Th"), pts.get(p++));
-        assertEquals(new Point(5, 1, "F"), pts.get(p++));
-        assertEquals(new Point(6, 1, "Sa"), pts.get(p++));
-        assertEquals(new Point(5, 2, 1), pts.get(p++));
-        assertEquals(new Point(6, 2, 2), pts.get(p++));
-        assertEquals(new Point(0, 3, 3), pts.get(p++));
-        assertEquals(new Point(0, 7, 31), pts.get(p += 27));
+        assertEquals(new Point(0, 0, MonthName.January, "January"),
+                pts.get(p++));
+        assertEquals(new Point(0, 1, MonthName.January, "Su"), pts.get(p++));
+        assertEquals(new Point(1, 1, MonthName.January, "M"), pts.get(p++));
+        assertEquals(new Point(2, 1, MonthName.January, "Tu"), pts.get(p++));
+        assertEquals(new Point(3, 1, MonthName.January, "W"), pts.get(p++));
+        assertEquals(new Point(4, 1, MonthName.January, "Th"), pts.get(p++));
+        assertEquals(new Point(5, 1, MonthName.January, "F"), pts.get(p++));
+        assertEquals(new Point(6, 1, MonthName.January, "Sa"), pts.get(p++));
+        assertEquals(new Point(5, 2, MonthName.January, 1), pts.get(p++));
+        assertEquals(new Point(6, 2, MonthName.January, 2), pts.get(p++));
+        assertEquals(new Point(0, 3, MonthName.January, 3), pts.get(p++));
+        assertEquals(new Point(0, 7, MonthName.January, 31), pts.get(p += 27));
     }
 
     @Test
@@ -63,18 +64,19 @@ public class MonthTest {
                 .getCalendarPoints();
         assertFalse(pts.isEmpty());
         int p = 0;
-        assertEquals(new Point(1, 1, "January"), pts.get(p++));
-        assertEquals(new Point(1, 2, "Su"), pts.get(p++));
-        assertEquals(new Point(2, 2, "M"), pts.get(p++));
-        assertEquals(new Point(3, 2, "Tu"), pts.get(p++));
-        assertEquals(new Point(4, 2, "W"), pts.get(p++));
-        assertEquals(new Point(5, 2, "Th"), pts.get(p++));
-        assertEquals(new Point(6, 2, "F"), pts.get(p++));
-        assertEquals(new Point(7, 2, "Sa"), pts.get(p++));
-        assertEquals(new Point(6, 3, 1), pts.get(p++));
-        assertEquals(new Point(7, 3, 2), pts.get(p++));
-        assertEquals(new Point(1, 4, 3), pts.get(p++));
-        assertEquals(new Point(1, 8, 31), pts.get(p += 27));
+        assertEquals(new Point(1, 1, MonthName.January, "January"),
+                pts.get(p++));
+        assertEquals(new Point(1, 2, MonthName.January, "Su"), pts.get(p++));
+        assertEquals(new Point(2, 2, MonthName.January, "M"), pts.get(p++));
+        assertEquals(new Point(3, 2, MonthName.January, "Tu"), pts.get(p++));
+        assertEquals(new Point(4, 2, MonthName.January, "W"), pts.get(p++));
+        assertEquals(new Point(5, 2, MonthName.January, "Th"), pts.get(p++));
+        assertEquals(new Point(6, 2, MonthName.January, "F"), pts.get(p++));
+        assertEquals(new Point(7, 2, MonthName.January, "Sa"), pts.get(p++));
+        assertEquals(new Point(6, 3, MonthName.January, 1), pts.get(p++));
+        assertEquals(new Point(7, 3, MonthName.January, 2), pts.get(p++));
+        assertEquals(new Point(1, 4, MonthName.January, 3), pts.get(p++));
+        assertEquals(new Point(1, 8, MonthName.January, 31), pts.get(p += 27));
     }
 
     @Test
@@ -102,6 +104,6 @@ public class MonthTest {
     @Test
     public void testGetPointForDay() throws Exception {
         Month m = new Month(MonthName.January, WeekDay.Sunday, 0, 0);
-        assertEquals(new Point(0, 2, 1), m.getPointForDay(1));
+        assertEquals(new Point(0, 2, MonthName.January, 1), m.getPointForDay(1));
     }
 }

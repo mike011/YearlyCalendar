@@ -1,13 +1,6 @@
 package ca.charland.report;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 import ooo.connector.BootstrapSocketConnector;
-import ca.charland.calendar.Event;
-import ca.charland.io.LoadFile;
-import ca.charland.report.Month.MonthName;
 
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.beans.PropertyVetoException;
@@ -27,7 +20,6 @@ import com.sun.star.sheet.XSpreadsheets;
 import com.sun.star.table.XCell;
 import com.sun.star.table.XColumnRowRange;
 import com.sun.star.table.XTableColumns;
-import com.sun.star.table.XTableRows;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 import com.sun.star.util.MalformedNumberFormatException;
@@ -128,7 +120,7 @@ public class Reporter {
         }
     }
 
-    private void setDate(String date, int x, int y) {
+    public void setDate(String date, int x, int y) {
         setFormula(date, x, y, dateFormat);
     }
 
@@ -218,19 +210,25 @@ public class Reporter {
         }
     }
 
-    void setWidth() throws WrappedTargetException,
+    void setWidthsForCalendarDates() throws WrappedTargetException,
             IndexOutOfBoundsException, UnknownPropertyException,
+            PropertyVetoException, IllegalArgumentException {
+
+        for (int x = 0; x <= 7 * 3 + 2; x++) {
+            setWidth(x, 500);
+        }
+    }
+
+    void setWidth(int x, int width) throws IndexOutOfBoundsException,
+            WrappedTargetException, UnknownPropertyException,
             PropertyVetoException, IllegalArgumentException {
         XColumnRowRange columnRowRange = UnoRuntime.queryInterface(
                 com.sun.star.table.XColumnRowRange.class, sheet);
         XTableColumns columns = columnRowRange.getColumns();
-
-        for (int x = 0; x <= 7 * 3 + 2; x++) {
-            Object columnObj = columns.getByIndex(x);
-            XPropertySet xPropSet = UnoRuntime.queryInterface(
-                    com.sun.star.beans.XPropertySet.class, columnObj);
-            xPropSet.setPropertyValue("Width", Integer.valueOf(500));
-        }
+        Object columnObj = columns.getByIndex(x);
+        XPropertySet xPropSet = UnoRuntime.queryInterface(
+                com.sun.star.beans.XPropertySet.class, columnObj);
+        xPropSet.setPropertyValue("Width", Integer.valueOf(width));
     }
 
     

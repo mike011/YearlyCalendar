@@ -16,6 +16,10 @@ public class Event {
     public Event(String line) {
         splits = line.split(",");
     }
+    
+    public Event(String[] line) {
+        splits = line;
+    }
 
     private String removeQuotes(String split) {
         if (!split.isEmpty()) {
@@ -30,11 +34,11 @@ public class Event {
     }
 
     public String getTitle() {
-        return removeQuotes(splits[Name.Title.ordinal()]);
+        return getString(Name.Title);
     }
 
     public Date getStart() {
-        return getDate(removeQuotes(splits[Name.Start.ordinal()]));
+        return getDate(getString(Name.Start));
     }
 
     private Date getDate(String date) {
@@ -49,15 +53,18 @@ public class Event {
     }
 
     public Date getEnd() {
-        return getDate(removeQuotes(splits[Name.End.ordinal()]));
+        return getDate(getString(Name.End));
     }
 
     public String getDayOfWeek() {
-        return removeQuotes(splits[Name.DayOfWeek.ordinal()]);
+        return getString(Name.DayOfWeek);
     }
 
     public Time getDuration() {
-        String d = removeQuotes(splits[Name.Duration.ordinal()]);
+        String d = getString(Name.Duration);
+        if(d.isEmpty()) {
+            return new Time(0,0);
+        }
         String[] splits = d.split(":");
         int hour = Integer.valueOf(splits[0]);
         if (hour >= 24) {
@@ -66,12 +73,19 @@ public class Event {
         return new Time(hour, Integer.valueOf(splits[1]));
     }
 
+    private String getString(Name n) {
+        if(n.ordinal() < splits.length) {
+            return removeQuotes(splits[n.ordinal()]);
+        }
+        return "";
+    }
+
     public boolean isAllDay() {
         return allDay;
     }
 
     public Time getDayTotal() {
-        String d = removeQuotes(splits[Name.DayTotal.ordinal()]);
+        String d = getString(Name.DayTotal);
         if (!d.isEmpty()) {
             String[] splits = d.split(":");
             int hour = Integer.valueOf(splits[0]);
@@ -81,22 +95,22 @@ public class Event {
     }
 
     public String getCreatedBy() {
-        return removeQuotes(splits[Name.CreatedBy.ordinal()]);
+        return getString(Name.CreatedBy);
     }
 
     public String getOrganizedBy() {
-        return removeQuotes(splits[Name.OrganizedBy.ordinal()]);
+        return getString(Name.OrganizedBy);
     }
 
     public String getDescription() {
-        return removeQuotes(splits[Name.Description.ordinal()]);
+        return getString(Name.Description);
     }
 
     public String getWhere() {
-        return removeQuotes(splits[Name.Where.ordinal()]);
+        return getString(Name.Where);
     }
 
     public String getCalendar() {
-        return removeQuotes(splits[Name.Calendar.ordinal()]);
+        return getString(Name.Calendar);
     }
 }
