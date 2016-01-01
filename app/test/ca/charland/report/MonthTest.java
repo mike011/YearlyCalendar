@@ -97,7 +97,7 @@ public class MonthTest {
     @Test
     public void testHighlight() throws Exception {
         Month m = new Month(MonthName.January, WeekDay.Friday, 0, 0);
-        m.highlight(2, "birthday");
+        m.highlight(2, new Highlight("birthday"));
         assertTrue(m.isDayHighlighted(2));
     }
 

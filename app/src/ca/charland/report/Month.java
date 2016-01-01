@@ -108,12 +108,16 @@ public class Month {
         return WeekDay.values()[(firstDayOfMonth.ordinal() + day - 1) % 7];
     }
 
-    public void highlight(int day, String description) {
-        getPointForDay(day).highlight(description);
+    public void highlight(int day, Highlight highlight) {
+        getPointForDay(day).highlight(highlight);
     }
 
     public boolean isDayHighlighted(int i) {
         return getPointForDay(i).isHighlighted();
+    }
+    
+    public Highlight getDayHighlighted(int i) {
+        return getPointForDay(i).getHighlight();
     }
     
     Point getPointForDay(int i) {

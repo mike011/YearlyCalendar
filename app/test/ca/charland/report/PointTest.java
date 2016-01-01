@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import ca.charland.report.Highlight.Type;
 import ca.charland.report.Month.MonthName;
 
 public class PointTest {
@@ -46,7 +47,7 @@ public class PointTest {
     public void isHighlighted() {
         Point p = new Point(0, 2, MonthName.January, "value");
         assertFalse(p.isHighlighted());
-        p.highlight("birthday");
+        p.highlight(new Highlight("Jane"));
         assertTrue(p.isHighlighted());
     }
 }

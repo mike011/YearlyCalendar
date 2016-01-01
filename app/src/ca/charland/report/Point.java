@@ -8,7 +8,7 @@ public class Point {
     public final int y;
     public final String value;
     public MonthName month;
-    public String description;
+    public Highlight highlight;
 
     public Point(int x, int y, MonthName month, int i) {
         this(x, y, month, String.valueOf(i));
@@ -33,12 +33,16 @@ public class Point {
         return r;
     }
 
-    public void highlight(String string) {
-        this.description = string;
+    public void highlight(Highlight string) {
+        this.highlight = string;
+    }
+    
+    public Highlight getHighlight() {
+    	return highlight;
     }
     
     public boolean isHighlighted() {
-        return description != null;
+        return highlight != null;
     }
 
 }

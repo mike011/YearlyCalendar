@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import ca.charland.report.Highlight.Type;
 import ca.charland.report.Month.MonthName;
 import ca.charland.report.Month.WeekDay;
 
@@ -118,7 +119,7 @@ public class CalendarTest {
     @Test
     public void highlight() {
         Calendar c = new Calendar();
-        c.highlight(MonthName.January, 2, "birthday");
+        c.highlight(MonthName.January, 2, new Highlight("Jane"));
         assertTrue(c.isHighlighted(MonthName.January, 2));
     }
 
@@ -128,7 +129,7 @@ public class CalendarTest {
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Date date = sdf.parse("02/01/2016");
-        c.highlight(date, "Birthday");
+        c.highlight(date, new Highlight("Jane"));
         assertTrue(c.isHighlighted(MonthName.January, 2));
     }
 }
