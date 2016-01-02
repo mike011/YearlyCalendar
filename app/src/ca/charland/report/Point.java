@@ -36,11 +36,11 @@ public class Point {
     public void highlight(Highlight string) {
         this.highlight = string;
     }
-    
+
     public Highlight getHighlight() {
-    	return highlight;
+        return highlight;
     }
-    
+
     public boolean isHighlighted() {
         return highlight != null;
     }

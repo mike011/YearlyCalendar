@@ -30,7 +30,7 @@ public class EventTest {
             Date d) {
         assertNotNull("Date is null", d);
         assertEquals(day, d.getDate());
-        assertEquals(month-1, d.getMonth());
+        assertEquals(month - 1, d.getMonth());
         assertEquals(year, 1900 + d.getYear());
         assertEquals(hour, d.getHours());
         assertEquals(minute, d.getMinutes());

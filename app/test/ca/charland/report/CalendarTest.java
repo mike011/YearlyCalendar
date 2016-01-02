@@ -9,7 +9,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import ca.charland.report.Highlight.Type;
 import ca.charland.report.Month.MonthName;
 import ca.charland.report.Month.WeekDay;
 
@@ -35,7 +34,7 @@ public class CalendarTest {
         assertEquals("February", feb.value);
         assertEquals(8, feb.x);
         assertEquals(0, feb.y);
-        
+
         Month.WeekDay day = c.getDayOfMonth(MonthName.February, 1);
         assertEquals(Month.WeekDay.Monday, day);
     }
@@ -91,31 +90,32 @@ public class CalendarTest {
         assertEquals(8 + 8, dec.x);
         assertEquals(24, dec.y);
     }
-    
+
     @Test
     public void firstDayOfMonth() {
         int x = 0;
         assertFirstDayOfMonth(MonthName.values()[x++], WeekDay.Friday);
         assertFirstDayOfMonth(MonthName.values()[x++], WeekDay.Monday);
         assertFirstDayOfMonth(MonthName.values()[x++], WeekDay.Tuesday);
-        
+
         assertFirstDayOfMonth(MonthName.values()[x++], WeekDay.Friday);
         assertFirstDayOfMonth(MonthName.values()[x++], WeekDay.Sunday);
         assertFirstDayOfMonth(MonthName.values()[x++], WeekDay.Wednesday);
-        
+
         assertFirstDayOfMonth(MonthName.values()[x++], WeekDay.Friday);
         assertFirstDayOfMonth(MonthName.values()[x++], WeekDay.Monday);
         assertFirstDayOfMonth(MonthName.values()[x++], WeekDay.Thursday);
-        
+
         assertFirstDayOfMonth(MonthName.values()[x++], WeekDay.Saturday);
         assertFirstDayOfMonth(MonthName.values()[x++], WeekDay.Tuesday);
         assertFirstDayOfMonth(MonthName.values()[x++], WeekDay.Thursday);
     }
 
     private void assertFirstDayOfMonth(MonthName name, WeekDay day) {
-        assertEquals(name.toString(), day, new Calendar().getDayOfMonth(name, 1));
+        assertEquals(name.toString(), day,
+                new Calendar().getDayOfMonth(name, 1));
     }
-    
+
     @Test
     public void highlight() {
         Calendar c = new Calendar();

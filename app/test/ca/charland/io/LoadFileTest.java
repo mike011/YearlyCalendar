@@ -9,10 +9,10 @@ import org.junit.Test;
 public class LoadFileTest {
 
     @Test
-        public void testLoadCSVFile() throws Exception {
-            assertFalse(LoadFile.loadCSVFile("./test/sample.csv").isEmpty());
-        }
-    
+    public void testLoadCSVFile() throws Exception {
+        assertFalse(LoadFile.loadCSVFile("./test/sample.csv").isEmpty());
+    }
+
     @Test
     public void testMultiLineEvent() throws Exception {
         List<String> load = LoadFile.loadCSVFile("./test/sample2.csv");

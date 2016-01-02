@@ -47,7 +47,7 @@ public class Month {
     private final int startY;
     private final WeekDay firstDayOfMonth;
     private List<Point> pts;
-    
+
     public Month(MonthName name, WeekDay firstDayOfMonth, int startX, int startY) {
         this.name = name;
         this.firstDayOfMonth = firstDayOfMonth;
@@ -115,11 +115,11 @@ public class Month {
     public boolean isDayHighlighted(int i) {
         return getPointForDay(i).isHighlighted();
     }
-    
+
     public Highlight getDayHighlighted(int i) {
         return getPointForDay(i).getHighlight();
     }
-    
+
     Point getPointForDay(int i) {
         int title = 0;
         int weekDayStrings = 7;

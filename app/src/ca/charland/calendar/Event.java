@@ -16,7 +16,7 @@ public class Event {
     public Event(String line) {
         splits = line.split(",");
     }
-    
+
     public Event(String[] line) {
         splits = line;
     }
@@ -62,8 +62,8 @@ public class Event {
 
     public Time getDuration() {
         String d = getString(Name.Duration);
-        if(d.isEmpty()) {
-            return new Time(0,0);
+        if (d.isEmpty()) {
+            return new Time(0, 0);
         }
         String[] splits = d.split(":");
         int hour = Integer.valueOf(splits[0]);
@@ -74,7 +74,7 @@ public class Event {
     }
 
     private String getString(Name n) {
-        if(n.ordinal() < splits.length) {
+        if (n.ordinal() < splits.length) {
             return removeQuotes(splits[n.ordinal()]);
         }
         return "";

@@ -6,7 +6,7 @@ public class Time {
     private final int minute;
 
     public Time(int hour, int minute) {
-        if(minute >= 60) {
+        if (minute >= 60) {
             hour += minute / 60;
             minute %= 60;
         }
@@ -21,13 +21,13 @@ public class Time {
     public int getMinute() {
         return minute;
     }
-    
+
     @Override
     public boolean equals(Object o) {
-        Time t = (Time)o;
+        Time t = (Time) o;
         return t.getMinute() == getMinute() && t.getHour() == getHour();
     }
-    
+
     @Override
     public String toString() {
         return getHour() + ":" + getMinuteString();
@@ -35,7 +35,7 @@ public class Time {
 
     private String getMinuteString() {
         String r = "";
-        if(minute < 10) {
+        if (minute < 10) {
             r += "0";
         }
         r += minute;
