@@ -24,7 +24,6 @@ import com.sun.star.sheet.XSpreadsheets;
 import com.sun.star.table.XCell;
 import com.sun.star.table.XColumnRowRange;
 import com.sun.star.table.XTableColumns;
-import com.sun.star.uno.Type;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 import com.sun.star.util.MalformedNumberFormatException;

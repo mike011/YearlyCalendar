@@ -2,13 +2,22 @@ package ca.charland.io;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.junit.Test;
 
 public class LoadFileTest {
 
     @Test
-    public void testLoad() throws Exception {
-        assertFalse(LoadFile.load("./test/sample.csv").isEmpty());
+        public void testLoadCSVFile() throws Exception {
+            assertFalse(LoadFile.loadCSVFile("./test/sample.csv").isEmpty());
+        }
+    
+    @Test
+    public void testMultiLineEvent() throws Exception {
+        List<String> load = LoadFile.loadCSVFile("./test/sample2.csv");
+        assertFalse(load.isEmpty());
+        assertEquals(2, load.size());
     }
 
 }

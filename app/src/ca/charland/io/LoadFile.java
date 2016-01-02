@@ -1,4 +1,5 @@
 package ca.charland.io;
+
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
@@ -8,27 +9,31 @@ import java.util.List;
 
 public class LoadFile {
 
-    /**
-     * Loads an entire file line by line.
-     */
-    public static List<String> load(String filename) {
+    public static List<String> loadFile(String filename) {
+        return loadFile(filename, false);
+    }
+
+    public static List<String> loadCSVFile(String filename) {
+        return loadFile(filename, true);
+    }
+
+    public static List<String> loadFile(String filename, boolean isCSV) {
         List<String> lines = new ArrayList<String>();
         try {
-            // Open the file that is the first
-            // command line parameter
             FileInputStream fstream = new FileInputStream(filename);
-            // Get the object of DataInputStream
             DataInputStream in = new DataInputStream(fstream);
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String strLine;
-            // Read File Line By Line
             while ((strLine = br.readLine()) != null) {
-                // Print the content on the console
+                if (isCSV) {
+                    while (strLine.split("\",\"").length < 10) {
+                        strLine += br.readLine();
+                    }
+                }
                 lines.add(strLine);
             }
-            // Close the input stream
             in.close();
-        } catch (Exception e) {// Catch exception if any
+        } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
         }
         return lines;
