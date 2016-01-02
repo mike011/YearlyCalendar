@@ -4,6 +4,7 @@ import java.awt.Font;
 
 import ooo.connector.BootstrapSocketConnector;
 
+import com.sun.star.awt.FontStrikeout;
 import com.sun.star.awt.FontUnderline;
 import com.sun.star.awt.FontWeight;
 import com.sun.star.beans.PropertyValue;
@@ -27,23 +28,18 @@ import com.sun.star.table.XTableColumns;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 import com.sun.star.util.MalformedNumberFormatException;
-import com.sun.star.util.NumberFormat;
 import com.sun.star.util.XNumberFormats;
 import com.sun.star.util.XNumberFormatsSupplier;
 
-public class Reporter {
+public class ReportPrinter {
 
     private XComponentContext context;
     private XMultiComponentFactory serviceManager;
     private XSpreadsheetDocument document;
     private XSpreadsheet sheet;
-    private int percentageFormat;
-    private int percentageTwoDigitFormat;
-    private int doubleFormat;
     private int dateFormat;
-    private int intFormat;
 
-    public Reporter() {
+    public ReportPrinter() {
         String oooExeFolder = setLibreOfficeFolder();
 
         // get the remote office context. If necessary a new office
@@ -101,10 +97,6 @@ public class Reporter {
         Locale aLocale = new Locale();
         try {
             dateFormat = numberFormats.addNew("MMM D", aLocale);
-            percentageFormat = numberFormats.addNew("##.0%", aLocale);
-            percentageTwoDigitFormat = numberFormats.addNew("##.00%", aLocale);
-            doubleFormat = numberFormats.addNew("##.0", aLocale);
-            intFormat = numberFormats.addNew("##.#", aLocale);
         } catch (MalformedNumberFormatException e) {
             e.printStackTrace();
         }
@@ -128,30 +120,10 @@ public class Reporter {
         setFormula(date, x, y, dateFormat);
     }
 
-    private void setMonth(int x, int y) {
-        setFormula(getMonthFormula(y + 1), x, y, NumberFormat.NUMBER);
-    }
-
-    private String getMonthFormula(int row) {
-        return "=MONTH(A" + row + ")";
-    }
-
     private void setFormula(String formula, int x, int y, int format) {
         XCell xCell = getCell(x, y);
         xCell.setFormula(formula);
         setFormat(x, y, format);
-    }
-
-    private void setDouble(String value, int x, int y) {
-        setValue(Double.parseDouble(value), x, y, doubleFormat);
-    }
-
-    private void setPercentage(String value, int x, int y) {
-        setValue(Double.parseDouble(value), x, y, percentageFormat);
-    }
-
-    private void setInt(String value, int x, int y) {
-        setValue(Integer.parseInt(value), x, y, intFormat);
     }
 
     XCell setString(String value, int x, int y) {
@@ -161,44 +133,34 @@ public class Reporter {
     }
 
     void setBoldedString(String value, int x, int y) throws Exception {
-        XCell xCell = setString(value, x, y);
-        XPropertySet xPropSet = UnoRuntime.queryInterface(
-                com.sun.star.beans.XPropertySet.class, xCell);
-
+    	setString(value, x,y);
+        XPropertySet xPropSet = getXPropSet(x, y);
         xPropSet.setPropertyValue("CharWeight", new Float(FontWeight.BOLD));
     }
 
     public void setItalizedString(String value, int x, int y) throws Exception {
-        XCell xCell = setString(value, x, y);
-        XPropertySet xPropSet = UnoRuntime.queryInterface(
-                com.sun.star.beans.XPropertySet.class, xCell);
-
+    	setString(value, x,y);
+        XPropertySet xPropSet = getXPropSet(x, y);
         xPropSet.setPropertyValue("CharPosture", Font.ITALIC);
     }
 
     public void setUnderlineString(String value, int x, int y) throws Exception {
-        XCell xCell = setString(value, x, y);
-        XPropertySet xPropSet = UnoRuntime.queryInterface(
-                com.sun.star.beans.XPropertySet.class, xCell);
+    	setString(value, x,y);
+        XPropertySet xPropSet = getXPropSet(x, y);
         xPropSet.setPropertyValue("CharUnderline", FontUnderline.SINGLE);
     }
-
-    private void setMuscleMassPercentageOfTotalWeightFormula(int x, int y) {
-        setFormula(getMuscleMassPercentageOfTotalWeightFormula(y + 1), x, y,
-                percentageTwoDigitFormat);
+    
+    public void setStikeout(int x, int y) throws Exception {
+        XPropertySet xPropSet = getXPropSet(x, y);
+        xPropSet.setPropertyValue("CharStrikeout", FontStrikeout.SINGLE);
     }
 
-    private String getMuscleMassPercentageOfTotalWeightFormula(int row) {
-        String muscleMass = "O" + row;
-        String weight = "C" + row;
-        return "=" + muscleMass + "/" + weight;
-    }
-
-    private void setValue(double value, int x, int y, int format) {
-        XCell xCell = getCell(x, y);
-        xCell.setValue(value);
-        setFormat(x, y, format);
-    }
+	private XPropertySet getXPropSet(int x, int y) {
+		XCell xCell = getCell(x, y);
+        XPropertySet xPropSet = UnoRuntime.queryInterface(
+                com.sun.star.beans.XPropertySet.class, xCell);
+		return xPropSet;
+	}
 
     private void setFormat(int x, int y, int format) {
         XCell cell = getCell(x, y);

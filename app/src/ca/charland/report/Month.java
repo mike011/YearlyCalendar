@@ -1,6 +1,7 @@
 package ca.charland.report;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Month {
@@ -47,8 +48,10 @@ public class Month {
     private final int startY;
     private final WeekDay firstDayOfMonth;
     private List<Point> pts;
+	private Date date;
 
-    public Month(MonthName name, WeekDay firstDayOfMonth, int startX, int startY) {
+    public Month(Date today, MonthName name, WeekDay firstDayOfMonth, int startX, int startY) {
+    	this.date = today;
         this.name = name;
         this.firstDayOfMonth = firstDayOfMonth;
         this.startX = startX;
@@ -78,16 +81,26 @@ public class Month {
 
     private List<Point> populateCalendarPoints() {
         List<Point> pts = new ArrayList<Point>();
-        pts.add(new Point(startX, startY, name, name.toString()));
+        pts.add(new Point(startX, startY, name, name.toString(), false));
         addWeekDays(pts);
         addDays(pts);
         return pts;
     }
 
-    private void addWeekDays(List<Point> pts) {
+    @SuppressWarnings("deprecation")
+	private boolean getIsOld(int day) {
+    	if(date.getMonth() >= name.ordinal()) {
+    		if(date.getDate() >= day) {
+    			return true;
+    		}
+    	}
+		return false;
+	}
+
+	private void addWeekDays(List<Point> pts) {
         int x = startX;
         for (WeekDay w : WeekDay.values()) {
-            pts.add(new Point(x++, startY + 1, name, w.toString()));
+            pts.add(new Point(x++, startY + 1, name, w.toString(), false));
         }
     }
 
@@ -96,11 +109,12 @@ public class Month {
         int y = startY + 2;
         int day = 1;
         while (day <= name.getDays()) {
-            pts.add(new Point(x++, y, name, day++));
+            pts.add(new Point(x++, y, name, day, getIsOld(day)));
             if (x - startX == 7) {
                 x = startX;
                 y += 1;
             }
+            day++;
         }
     }
 
@@ -116,7 +130,7 @@ public class Month {
         return getPointForDay(i).isHighlighted();
     }
 
-    public List<Highlight> getDayHighlighted(int i) {
+    public List<Highlight> getHighlights(int i) {
         return getPointForDay(i).getHighlights();
     }
 

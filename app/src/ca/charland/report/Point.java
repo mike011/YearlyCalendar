@@ -10,18 +10,20 @@ public class Point {
     public final int x;
     public final int y;
     public final String value;
-    public MonthName month;
+    public final MonthName month;
     private List<Highlight> highlights;
+	public final boolean old;
 
-    public Point(int x, int y, MonthName month, int i) {
-        this(x, y, month, String.valueOf(i));
+    public Point(int x, int y, MonthName month, int i, boolean b) {
+        this(x, y, month, String.valueOf(i), b);
     }
 
-    public Point(int x, int y, MonthName month, String i) {
+    public Point(int x, int y, MonthName month, String i, boolean b) {
         this.x = x;
         this.y = y;
         this.month = month;
         this.value = i;
+        this.old = b;
         this.highlights = new ArrayList<Highlight>();
     }
 
@@ -48,5 +50,4 @@ public class Point {
     public boolean isHighlighted() {
         return !highlights.isEmpty();
     }
-
 }

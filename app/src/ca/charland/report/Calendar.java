@@ -14,9 +14,15 @@ import ca.charland.report.Month.WeekDay;
 public class Calendar {
 
     private Map<MonthName, Month> days;
+	private Date today;
 
-    public Calendar() {
-        days = new TreeMap<MonthName, Month>();
+	public Calendar() {
+		this(new Date());
+	}
+	
+    public Calendar(Date today) {
+        this.today = today;
+		days = new TreeMap<MonthName, Month>();
         populateDays();
     }
 
@@ -42,7 +48,7 @@ public class Calendar {
 
     private WeekDay addMonth(int startX, int startY, MonthName month,
             WeekDay firstDay) {
-        Month value = new Month(month, firstDay, startX, startY);
+        Month value = new Month(today, month, firstDay, startX, startY);
         days.put(month, value);
         WeekDay dayOfMonth = value.getWeekDay(month.getDays()).getNextDay();
         return dayOfMonth;
@@ -86,7 +92,7 @@ public class Calendar {
 
     public List<Highlight> getHighlighted(MonthName name, int i) {
         Month month = days.get(name);
-        return month.getDayHighlighted(i);
+        return month.getHighlights(i);
     }
 
     @SuppressWarnings("deprecation")

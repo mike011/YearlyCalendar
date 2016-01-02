@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
@@ -13,7 +14,9 @@ import ca.charland.report.Month.MonthName;
 
 public class ReportMakerTest {
 
-    @Test
+    private static final Date DATE = new Date(0);
+
+	@Test
     public void getEventsFromFile() throws Exception {
         ReportMaker rm = new ReportMaker(
                 ReportMaker.getEventsFromFile("./test/sample.csv"));
@@ -22,7 +25,7 @@ public class ReportMakerTest {
 
     @Test
     public void testHighlightOnePoint() throws Exception {
-        Calendar calendar = new Calendar();
+        Calendar calendar = new Calendar(DATE);
         List<Event> events = new ArrayList<Event>();
         ReportMaker rm = new ReportMaker(calendar, events);
         events.add(new Event(new String[] { "Test", "01/02/2016 00:00" }));
@@ -32,7 +35,7 @@ public class ReportMakerTest {
 
     @Test
     public void testHighlightMultipleDaysFromOneEvent() throws Exception {
-        Calendar calendar = new Calendar();
+        Calendar calendar = new Calendar(DATE);
         List<Event> events = new ArrayList<Event>();
         ReportMaker rm = new ReportMaker(calendar, events);
         events.add(new Event(new String[] { "Multi-Day", "01/27/2016 12:00",
@@ -48,7 +51,7 @@ public class ReportMakerTest {
     
     @Test
     public void testHighlightPointsTwoOnSameDay() throws Exception {
-        Calendar calendar = new Calendar();
+        Calendar calendar = new Calendar(DATE);
         List<Event> events = new ArrayList<Event>();
         ReportMaker rm = new ReportMaker(calendar, events);
         events.add(new Event(new String[] { "Test", "01/02/2016 00:00" }));
@@ -59,7 +62,7 @@ public class ReportMakerTest {
 
     @Test
     public void testHighlightStatHoliday() {
-        Calendar calendar = new Calendar();
+        Calendar calendar = new Calendar(DATE);
         List<Event> events = new ArrayList<Event>();
         ReportMaker rm = new ReportMaker(calendar, events);
         events.add(new Event(new String[] { "Test", "01/02/2016 00:00", "", "",
@@ -108,7 +111,7 @@ public class ReportMakerTest {
 
     @Test
     public void testHighlightPointsShowHoursForLessThenADay() throws Exception {
-        Calendar calendar = new Calendar();
+        Calendar calendar = new Calendar(DATE );
         List<Event> events = new ArrayList<Event>();
         ReportMaker rm = new ReportMaker(calendar, events);
         events.add(new Event(new String[] { "Test", "01/10/2016 15:00","01/10/2016 18:00","Sun","03:00"}));

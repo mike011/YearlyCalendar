@@ -5,16 +5,15 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import ca.charland.calendar.Event;
+import ca.charland.io.LoadFile;
+import ca.charland.report.Highlight.Type;
+
 import com.sun.star.beans.PropertyVetoException;
 import com.sun.star.beans.UnknownPropertyException;
 import com.sun.star.lang.IllegalArgumentException;
 import com.sun.star.lang.IndexOutOfBoundsException;
 import com.sun.star.lang.WrappedTargetException;
-
-import ca.charland.calendar.Event;
-import ca.charland.calendar.Time;
-import ca.charland.io.LoadFile;
-import ca.charland.report.Highlight.Type;
 
 public class ReportMaker {
 
@@ -77,9 +76,9 @@ public class ReportMaker {
             if (e.getDuration().getHour() < 24 && e.getStart() != null
                     && e.getEnd() != null) {
                 String time = getTime(e.getStart());
-                time += "-";
+                time += '-';
                 time += getTime(e.getEnd());
-                title = time + " " + title;
+                title = time + ' ' + title;
             }
             Highlight highlight = new Highlight(title);
             if (e.getCreatedBy().equals("Holidays in Canada")) {
@@ -115,16 +114,23 @@ public class ReportMaker {
         return r + AMPM;
     }
 
-    private void addPointsToCalendar(Reporter reporter) throws Exception {
+    private void addPointsToCalendar(ReportPrinter reporter) throws Exception {
         List<Point> pts = calendar.getDays();
         int y = 0;
         int x = 7 * 3 + 2;
         reporter.setWidth(x + 1, 7500);
         int MAX_Y = 40;
         for (Point p : pts) {
+        	if(p.old) {
+          		reporter.setStikeout(p.x, p.y);
+            }
             if (p.isHighlighted()) {
                 List<Highlight> highlights = p.getHighlights();
                 for (Highlight highlight : highlights) {
+                	if(p.old) {
+                		reporter.setStikeout(x, y);
+                		reporter.setStikeout(x+1, y);
+                	}
                     reporter.setDate(p.month.toString() + " " + p.value, x, y);
                     if (Type.StatutoryHoliday.equals(highlight.type)) {
                         reporter.setItalizedString(p.value, p.x, p.y);
@@ -153,7 +159,7 @@ public class ReportMaker {
         }
     }
 
-    void setWidthsForCalendarDates(Reporter r) throws WrappedTargetException,
+    void setWidthsForCalendarDates(ReportPrinter r) throws WrappedTargetException,
             IndexOutOfBoundsException, UnknownPropertyException,
             PropertyVetoException, IllegalArgumentException {
 
@@ -165,7 +171,7 @@ public class ReportMaker {
     public static void main(String args[]) throws Exception {
         ReportMaker maker = new ReportMaker(getEventsFromFile(args[0]));
         maker.highlightPoints();
-        Reporter report = new Reporter();
+        ReportPrinter report = new ReportPrinter();
         maker.setWidthsForCalendarDates(report);
         maker.addPointsToCalendar(report);
     }

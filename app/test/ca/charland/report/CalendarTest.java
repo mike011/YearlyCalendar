@@ -13,10 +13,12 @@ import ca.charland.report.Month.MonthName;
 import ca.charland.report.Month.WeekDay;
 
 public class CalendarTest {
+	
+	private static final Date DATE = new Date(0);
 
     @Test
     public void getDaysForTheYear() {
-        Calendar c = new Calendar();
+        Calendar c = new Calendar(DATE);
         int monthTitles = 12;
         int dayTitles = 12 * 7;
         int daysInYear = 366;
@@ -25,7 +27,7 @@ public class CalendarTest {
 
     @Test
     public void februaryIsInCorrectLocation() {
-        Calendar c = new Calendar();
+        Calendar c = new Calendar(DATE);
         List<Point> days = c.getDays();
         int monthTitle = 1;
         int dayTitles = 7;
@@ -41,7 +43,7 @@ public class CalendarTest {
 
     @Test
     public void marchIsInCorrectLocation() {
-        Calendar c = new Calendar();
+        Calendar c = new Calendar(DATE);
         List<Point> days = c.getDays();
         int monthTitles = 1 * 2;
         int dayTitles = 7 * 2;
@@ -54,7 +56,7 @@ public class CalendarTest {
 
     @Test
     public void aprilIsInCorrectLocation() {
-        Calendar c = new Calendar();
+        Calendar c = new Calendar(DATE);
         List<Point> days = c.getDays();
         int monthTitles = 1 * 3;
         int dayTitles = 7 * 3;
@@ -67,7 +69,7 @@ public class CalendarTest {
 
     @Test
     public void mayIsInCorrectLocation() {
-        Calendar c = new Calendar();
+        Calendar c = new Calendar(DATE);
         List<Point> days = c.getDays();
         int monthTitles = 1 * 4;
         int dayTitles = 7 * 4;
@@ -80,7 +82,7 @@ public class CalendarTest {
 
     @Test
     public void decemberIsInCorrectLocation() {
-        Calendar c = new Calendar();
+        Calendar c = new Calendar(DATE);
         List<Point> days = c.getDays();
         int monthTitles = 1 * 11;
         int dayTitles = 7 * 11;
@@ -113,19 +115,19 @@ public class CalendarTest {
 
     private void assertFirstDayOfMonth(MonthName name, WeekDay day) {
         assertEquals(name.toString(), day,
-                new Calendar().getDayOfMonth(name, 1));
+                new Calendar(DATE).getDayOfMonth(name, 1));
     }
 
     @Test
     public void highlight() {
-        Calendar c = new Calendar();
+        Calendar c = new Calendar(DATE);
         c.highlight(MonthName.January, 2, new Highlight("Jane"));
         assertTrue(c.isHighlighted(MonthName.January, 2));
     }
 
     @Test
     public void testHighlightDate() throws Exception {
-        Calendar c = new Calendar();
+        Calendar c = new Calendar(DATE);
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Date date = sdf.parse("02/01/2016");
