@@ -116,8 +116,8 @@ public class Month {
         return getPointForDay(i).isHighlighted();
     }
 
-    public Highlight getDayHighlighted(int i) {
-        return getPointForDay(i).getHighlight();
+    public List<Highlight> getDayHighlighted(int i) {
+        return getPointForDay(i).getHighlights();
     }
 
     Point getPointForDay(int i) {

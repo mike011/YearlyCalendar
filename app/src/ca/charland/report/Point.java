@@ -1,5 +1,8 @@
 package ca.charland.report;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ca.charland.report.Month.MonthName;
 
 public class Point {
@@ -8,7 +11,7 @@ public class Point {
     public final int y;
     public final String value;
     public MonthName month;
-    public Highlight highlight;
+    private List<Highlight> highlights;
 
     public Point(int x, int y, MonthName month, int i) {
         this(x, y, month, String.valueOf(i));
@@ -19,6 +22,7 @@ public class Point {
         this.y = y;
         this.month = month;
         this.value = i;
+        this.highlights = new ArrayList<Highlight>();
     }
 
     @Override
@@ -34,15 +38,15 @@ public class Point {
     }
 
     public void highlight(Highlight string) {
-        this.highlight = string;
+        this.highlights.add(string);
     }
 
-    public Highlight getHighlight() {
-        return highlight;
+    public List<Highlight> getHighlights() {
+        return highlights;
     }
 
     public boolean isHighlighted() {
-        return highlight != null;
+        return !highlights.isEmpty();
     }
 
 }

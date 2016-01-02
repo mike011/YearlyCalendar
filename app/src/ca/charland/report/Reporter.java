@@ -228,15 +228,6 @@ public class Reporter {
         }
     }
 
-    void setWidthsForCalendarDates() throws WrappedTargetException,
-            IndexOutOfBoundsException, UnknownPropertyException,
-            PropertyVetoException, IllegalArgumentException {
-
-        for (int x = 0; x <= 7 * 3 + 1; x++) {
-            setWidth(x, 500);
-        }
-    }
-
     void setWidth(int x, int width) throws IndexOutOfBoundsException,
             WrappedTargetException, UnknownPropertyException,
             PropertyVetoException, IllegalArgumentException {

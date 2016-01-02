@@ -84,7 +84,7 @@ public class Calendar {
         return month.isDayHighlighted(i);
     }
 
-    public Highlight getHighlighted(MonthName name, int i) {
+    public List<Highlight> getHighlighted(MonthName name, int i) {
         Month month = days.get(name);
         return month.getDayHighlighted(i);
     }

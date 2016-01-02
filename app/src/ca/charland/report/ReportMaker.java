@@ -1,10 +1,18 @@
 package ca.charland.report;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import com.sun.star.beans.PropertyVetoException;
+import com.sun.star.beans.UnknownPropertyException;
+import com.sun.star.lang.IllegalArgumentException;
+import com.sun.star.lang.IndexOutOfBoundsException;
+import com.sun.star.lang.WrappedTargetException;
+
 import ca.charland.calendar.Event;
+import ca.charland.calendar.Time;
 import ca.charland.io.LoadFile;
 import ca.charland.report.Highlight.Type;
 
@@ -65,7 +73,15 @@ public class ReportMaker {
 
     void highlightPoints() {
         for (Event e : events) {
-            Highlight highlight = new Highlight(e.getTitle());
+            String title = e.getTitle();
+            if (e.getDuration().getHour() < 24 && e.getStart() != null
+                    && e.getEnd() != null) {
+                String time = getTime(e.getStart());
+                time += "-";
+                time += getTime(e.getEnd());
+                title = time + " " + title;
+            }
+            Highlight highlight = new Highlight(title);
             if (e.getCreatedBy().equals("Holidays in Canada")) {
                 highlight = new Highlight(e.getTitle(), Type.StatutoryHoliday);
             }
@@ -80,7 +96,26 @@ public class ReportMaker {
         }
     }
 
-    private void addPoints(Reporter reporter) throws Exception {
+    @SuppressWarnings("deprecation")
+    private String getTime(Date d) {
+        String r = "";
+        int hours = d.getHours();
+        String AMPM = "AM";
+        if (hours > 12) {
+            hours -= 12;
+            AMPM = "PM";
+        }
+        r += String.valueOf(hours) + ':';
+        
+        int minutes = d.getMinutes();
+        if(minutes < 10) {
+            r += '0';
+        }
+        r += String.valueOf(minutes);
+        return r + AMPM;
+    }
+
+    private void addPointsToCalendar(Reporter reporter) throws Exception {
         List<Point> pts = calendar.getDays();
         int y = 0;
         int x = 7 * 3 + 2;
@@ -88,20 +123,23 @@ public class ReportMaker {
         int MAX_Y = 40;
         for (Point p : pts) {
             if (p.isHighlighted()) {
-                Highlight highlight = p.getHighlight();
-                reporter.setDate(p.month.toString() + " " + p.value, x, y);
-                if (Type.StatutoryHoliday.equals(highlight.type)) {
-                    reporter.setItalizedString(p.value, p.x, p.y);
-                    reporter.setItalizedString(p.highlight.description, x + 1,
-                            y++);
-                } else if (Type.Birthday.equals(highlight.type)) {
-                    reporter.setUnderlineString(p.value, p.x, p.y);
-                    reporter.setUnderlineString(p.highlight.description, x + 1,
-                            y++);
-                } else {
-                    reporter.setBoldedString(p.value, p.x, p.y);
-                    reporter.setBoldedString(p.highlight.description, x + 1,
-                            y++);
+                List<Highlight> highlights = p.getHighlights();
+                for (Highlight highlight : highlights) {
+                    reporter.setDate(p.month.toString() + " " + p.value, x, y);
+                    if (Type.StatutoryHoliday.equals(highlight.type)) {
+                        reporter.setItalizedString(p.value, p.x, p.y);
+                        reporter.setItalizedString(highlight.description,
+                                x + 1, y++);
+
+                    } else if (Type.Birthday.equals(highlight.type)) {
+                        reporter.setUnderlineString(p.value, p.x, p.y);
+                        reporter.setUnderlineString(highlight.description,
+                                x + 1, y++);
+                    } else {
+                        reporter.setBoldedString(p.value, p.x, p.y);
+                        reporter.setBoldedString(highlight.description, x + 1,
+                                y++);
+                    }
                 }
 
             } else {
@@ -115,11 +153,20 @@ public class ReportMaker {
         }
     }
 
+    void setWidthsForCalendarDates(Reporter r) throws WrappedTargetException,
+            IndexOutOfBoundsException, UnknownPropertyException,
+            PropertyVetoException, IllegalArgumentException {
+
+        for (int x = 0; x <= 7 * 3 + 1; x++) {
+            r.setWidth(x, 500);
+        }
+    }
+
     public static void main(String args[]) throws Exception {
         ReportMaker maker = new ReportMaker(getEventsFromFile(args[0]));
         maker.highlightPoints();
         Reporter report = new Reporter();
-        report.setWidthsForCalendarDates();
-        maker.addPoints(report);
+        maker.setWidthsForCalendarDates(report);
+        maker.addPointsToCalendar(report);
     }
 }

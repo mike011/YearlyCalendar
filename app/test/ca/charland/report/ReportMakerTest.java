@@ -45,6 +45,17 @@ public class ReportMakerTest {
         assertTrue("Jan 29th not highlighted",
                 calendar.isHighlighted(MonthName.January, 29));
     }
+    
+    @Test
+    public void testHighlightPointsTwoOnSameDay() throws Exception {
+        Calendar calendar = new Calendar();
+        List<Event> events = new ArrayList<Event>();
+        ReportMaker rm = new ReportMaker(calendar, events);
+        events.add(new Event(new String[] { "Test", "01/02/2016 00:00" }));
+        events.add(new Event(new String[] { "Test", "01/02/2016 00:00" }));
+        rm.highlightPoints();
+        assertTrue(calendar.isHighlighted(MonthName.January, 2));
+    }
 
     @Test
     public void testHighlightStatHoliday() {
@@ -54,8 +65,8 @@ public class ReportMakerTest {
         events.add(new Event(new String[] { "Test", "01/02/2016 00:00", "", "",
                 "", "", "Holidays in Canada" }));
         rm.highlightPoints();
-        Highlight highlight = calendar.getHighlighted(MonthName.January, 2);
-        assertEquals(Highlight.Type.StatutoryHoliday, highlight.type);
+        List<Highlight> highlight = calendar.getHighlighted(MonthName.January, 2);
+        assertEquals(Highlight.Type.StatutoryHoliday, highlight.get(0).type);
     }
 
     @Test
@@ -95,4 +106,14 @@ public class ReportMakerTest {
         assertTrue(events.isEmpty());
     }
 
+    @Test
+    public void testHighlightPointsShowHoursForLessThenADay() throws Exception {
+        Calendar calendar = new Calendar();
+        List<Event> events = new ArrayList<Event>();
+        ReportMaker rm = new ReportMaker(calendar, events);
+        events.add(new Event(new String[] { "Test", "01/10/2016 15:00","01/10/2016 18:00","Sun","03:00"}));
+        rm.highlightPoints();
+        List<Highlight> highlight = calendar.getHighlighted(MonthName.January, 10);
+        assertEquals("3:00PM-6:00PM Test", highlight.get(0).description);
+    }
 }

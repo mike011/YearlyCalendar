@@ -1,10 +1,12 @@
 package ca.charland.report;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import ca.charland.report.Highlight.Type;
 import ca.charland.report.Month.MonthName;
 
 public class PointTest {
@@ -49,5 +51,13 @@ public class PointTest {
         assertFalse(p.isHighlighted());
         p.highlight(new Highlight("Jane"));
         assertTrue(p.isHighlighted());
+    }
+
+    @Test
+    public void testHighlightMultipleTims() throws Exception {
+        Point p = new Point(0, 2, MonthName.January, "one");
+        p.highlight(new Highlight("one"));
+        p.highlight(new Highlight("two"));
+        assertEquals(2, p.getHighlights());
     }
 }
