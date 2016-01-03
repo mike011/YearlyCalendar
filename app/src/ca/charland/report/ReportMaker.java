@@ -147,7 +147,6 @@ public class ReportMaker {
                                 y++);
                     }
                 }
-
             } else {
                 reporter.setString(p.value, p.x, p.y);
             }
