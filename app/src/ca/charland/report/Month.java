@@ -48,10 +48,11 @@ public class Month {
     private final int startY;
     private final WeekDay firstDayOfMonth;
     private List<Point> pts;
-	private Date date;
+    private Date date;
 
-    public Month(Date today, MonthName name, WeekDay firstDayOfMonth, int startX, int startY) {
-    	this.date = today;
+    public Month(Date today, MonthName name, WeekDay firstDayOfMonth,
+            int startX, int startY) {
+        this.date = today;
         this.name = name;
         this.firstDayOfMonth = firstDayOfMonth;
         this.startX = startX;
@@ -88,16 +89,16 @@ public class Month {
     }
 
     @SuppressWarnings("deprecation")
-	private boolean getIsOld(int day) {
-    	if(date.getMonth() >= name.ordinal()) {
-    		if(date.getDate() >= day) {
-    			return true;
-    		}
-    	}
-		return false;
-	}
+    private boolean getIsOld(int day) {
+        if (date.getMonth() >= name.ordinal()) {
+            if (date.getDate() >= day) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-	private void addWeekDays(List<Point> pts) {
+    private void addWeekDays(List<Point> pts) {
         int x = startX;
         for (WeekDay w : WeekDay.values()) {
             pts.add(new Point(x++, startY + 1, name, w.toString(), false));

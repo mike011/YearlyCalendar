@@ -12,18 +12,18 @@ public class Point {
     public final String value;
     public final MonthName month;
     private List<Highlight> highlights;
-	public final boolean old;
+    public final boolean old;
 
-    public Point(int x, int y, MonthName month, int i, boolean b) {
-        this(x, y, month, String.valueOf(i), b);
+    public Point(int x, int y, MonthName month, int value, boolean old) {
+        this(x, y, month, String.valueOf(value), old);
     }
 
-    public Point(int x, int y, MonthName month, String i, boolean b) {
+    public Point(int x, int y, MonthName month, String value, boolean old) {
         this.x = x;
         this.y = y;
         this.month = month;
-        this.value = i;
-        this.old = b;
+        this.value = value;
+        this.old = old;
         this.highlights = new ArrayList<Highlight>();
     }
 

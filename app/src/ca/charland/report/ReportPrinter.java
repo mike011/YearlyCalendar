@@ -22,7 +22,6 @@ import com.sun.star.lang.XMultiComponentFactory;
 import com.sun.star.sheet.XSpreadsheet;
 import com.sun.star.sheet.XSpreadsheetDocument;
 import com.sun.star.sheet.XSpreadsheets;
-import com.sun.star.style.ParagraphAdjust;
 import com.sun.star.table.CellHoriJustify;
 import com.sun.star.table.XCell;
 import com.sun.star.table.XColumnRowRange;
@@ -156,11 +155,10 @@ public class ReportPrinter {
         xPropSet.setPropertyValue("CharUnderline", FontUnderline.SINGLE);
     }
 
-    public void setStikeout(int x, int y) throws Exception {
+    public void setStrikeout(int x, int y) throws Exception {
         XPropertySet xPropSet = getXPropSet(x, y);
         xPropSet.setPropertyValue("CharStrikeout", FontStrikeout.SINGLE);
     }
-    
 
     public void rightAlign(int x, int y) throws Exception {
         XPropertySet xPropSet = getXPropSet(x, y);

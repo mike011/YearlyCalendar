@@ -122,28 +122,20 @@ public class ReportMaker {
         int MAX_Y = 55;
         for (int i = 0; i < pts.size(); i++) {
             Point p = pts.get(i);
-            if (p.isHighlighted()) {
+            boolean isOld = p.old;
+            if(isOld) {
+                printer.setStrikeout(p.x, p.y);
+            }
+            if (p.isHighlighted()) {                
                 List<Highlight> highlights = p.getHighlights();
                 for (Highlight highlight : highlights) {
                     if (highlight.displayDescription()) {
                         printer.setDate(getDate(pts, i, highlight.description),
                                 x, y);
                         printer.rightAlign(x, y);
-                        if (Type.StatutoryHoliday.equals(highlight.type)) {
-                            printer.setItalizedString(p.value, p.x, p.y);
-                            printer.setItalizedString(highlight.description,
-                                    x + 1, y++);
-
-                        } else if (Type.Birthday.equals(highlight.type)) {
-                            printer.setUnderlineString(p.value, p.x, p.y);
-                            printer.setUnderlineString(highlight.description,
-                                    x + 1, y++);
-                        } else {
-                            printer.setBoldedString(p.value, p.x, p.y);
-                            printer.setBoldedString(highlight.description,
-                                    x + 1, y++);
-                        }
+                        addHighlight(printer, highlight.description, x+1, y++, highlight, isOld);
                     }
+                    addHighlight(printer, p.value, p.x, p.y, highlight, isOld);
                 }
             } else {
                 printer.setString(p.value, p.x, p.y);
@@ -153,6 +145,21 @@ public class ReportMaker {
                 x += 2;
                 printer.setWidth(x + 1, 7500);
             }
+        }
+    }
+
+    private void addHighlight(ReportPrinter printer, String value, int x, int y,
+            Highlight highlight, boolean isOld) throws Exception {
+        if(isOld) {
+            printer.setStrikeout(x, y);
+        }
+        if (Type.StatutoryHoliday.equals(highlight.type)) {
+            printer.setItalizedString(value, x, y);
+
+        } else if (Type.Birthday.equals(highlight.type)) {
+            printer.setUnderlineString(value, x, y);
+        } else {
+            printer.setBoldedString(value, x, y);
         }
     }
 

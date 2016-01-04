@@ -14,15 +14,15 @@ import ca.charland.report.Month.WeekDay;
 public class Calendar {
 
     private Map<MonthName, Month> days;
-	private Date today;
+    private Date today;
 
-	public Calendar() {
-		this(new Date());
-	}
-	
+    public Calendar() {
+        this(new Date());
+    }
+
     public Calendar(Date today) {
         this.today = today;
-		days = new TreeMap<MonthName, Month>();
+        days = new TreeMap<MonthName, Month>();
         populateDays();
     }
 

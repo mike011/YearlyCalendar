@@ -14,7 +14,7 @@ import ca.charland.report.Month.WeekDay;
 
 public class CalendarTest {
 	
-	private static final Date DATE = new Date(0);
+    private static final Date DATE = new Date(0);
 
     @Test
     public void getDaysForTheYear() {
