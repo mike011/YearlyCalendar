@@ -12,6 +12,13 @@ import org.junit.Test;
 import ca.charland.calendar.Event;
 import ca.charland.report.Month.MonthName;
 
+import com.sun.star.beans.PropertyVetoException;
+import com.sun.star.beans.UnknownPropertyException;
+import com.sun.star.lang.IllegalArgumentException;
+import com.sun.star.lang.IndexOutOfBoundsException;
+import com.sun.star.lang.WrappedTargetException;
+import com.sun.star.table.XCell;
+
 public class ReportMakerTest {
 
     private static final Date DATE = new Date(0);
@@ -118,5 +125,81 @@ public class ReportMakerTest {
         rm.highlightPoints();
         List<Highlight> highlight = calendar.getHighlighted(MonthName.January, 10);
         assertEquals("3:00PM-6:00PM Test", highlight.get(0).description);
+    }
+    
+    private class MyReporter extends ReportPrinter {
+        
+        List<String> points = new ArrayList<String>();
+        
+        @Override
+        void init() {
+        }
+        
+        @Override
+        void setWidth(int x, int width) throws IndexOutOfBoundsException,
+        WrappedTargetException, UnknownPropertyException,
+        PropertyVetoException, IllegalArgumentException {            
+        }
+        
+        @Override 
+        XCell setString(String value, int x, int y) { 
+            return null;
+        }
+        
+        @Override
+        void setFormula(String value, int x, int y, int format) {
+            points.add(value);
+        }
+        
+        @Override
+        public void setBoldedString(String value, int x, int y) throws Exception {
+        }
+        
+        @Override
+        public void setItalizedString(String value, int x, int y) throws Exception {
+        }
+
+        @Override
+        public void setUnderlineString(String value, int x, int y) throws Exception {
+        }
+        
+        @Override
+        public void setStikeout(int x, int y) throws Exception {
+        }
+        
+        @Override
+        public void rightAlign(int x, int y) throws Exception {
+            
+        }
+    }
+
+    @Test
+    public void testAddPointsToCalendarThreeDayEvent() throws Exception {
+        Calendar calendar = new Calendar();
+        List<Event> events = new ArrayList<Event>();
+        ReportMaker rm = new ReportMaker(calendar, events);
+        events.add(new Event(new String[] { "Multi-Day", "01/27/2016 12:00",
+                "01/29/2016 18:30", "Wed", "54:30", "54:30" }));
+        rm.highlightPoints();
+        MyReporter reporter = new MyReporter();
+        rm.addPointsToCalendar(reporter);
+        assertEquals("Jan 27-29", reporter.points.get(0));
+        assertEquals(1, reporter.points.size());
+    }
+    
+    @Test
+    public void testAddPointsToCalendarEventSeperatedByADay() throws Exception {
+        Calendar calendar = new Calendar();
+        List<Event> events = new ArrayList<Event>();
+        ReportMaker rm = new ReportMaker(calendar, events);
+        events.add(new Event(new String[] { "Single-Day", "01/27/2016 12:00",
+                "01/27/2016 18:30", "Wed", "24:00", "24:00" }));
+        events.add(new Event(new String[] { "Single-Day", "01/29/2016 12:00",
+                "01/29/2016 18:30", "Fri", "24:00", "24:00" }));
+        rm.highlightPoints();
+        MyReporter reporter = new MyReporter();
+        rm.addPointsToCalendar(reporter);
+        assertEquals("Jan 27", reporter.points.get(0));
+        assertEquals("Jan 29", reporter.points.get(1));
     }
 }

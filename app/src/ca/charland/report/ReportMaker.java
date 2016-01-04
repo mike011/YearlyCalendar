@@ -105,62 +105,84 @@ public class ReportMaker {
             AMPM = "PM";
         }
         r += String.valueOf(hours) + ':';
-        
+
         int minutes = d.getMinutes();
-        if(minutes < 10) {
+        if (minutes < 10) {
             r += '0';
         }
         r += String.valueOf(minutes);
         return r + AMPM;
     }
 
-    private void addPointsToCalendar(ReportPrinter reporter) throws Exception {
+    void addPointsToCalendar(ReportPrinter printer) throws Exception {
         List<Point> pts = calendar.getDays();
         int y = 0;
         int x = 7 * 3 + 2;
-        reporter.setWidth(x + 1, 7500);
-        int MAX_Y = 40;
-        for (Point p : pts) {
-        	if(p.old) {
-          		reporter.setStikeout(p.x, p.y);
-            }
+        printer.setWidth(x + 1, 7500);
+        int MAX_Y = 55;
+        for (int i = 0; i < pts.size(); i++) {
+            Point p = pts.get(i);
             if (p.isHighlighted()) {
                 List<Highlight> highlights = p.getHighlights();
                 for (Highlight highlight : highlights) {
-                	if(p.old) {
-                		reporter.setStikeout(x, y);
-                		reporter.setStikeout(x+1, y);
-                	}
-                    reporter.setDate(p.month.toString() + " " + p.value, x, y);
-                    if (Type.StatutoryHoliday.equals(highlight.type)) {
-                        reporter.setItalizedString(p.value, p.x, p.y);
-                        reporter.setItalizedString(highlight.description,
-                                x + 1, y++);
+                    if (highlight.displayDescription()) {
+                        printer.setDate(getDate(pts, i, highlight.description),
+                                x, y);
+                        printer.rightAlign(x, y);
+                        if (Type.StatutoryHoliday.equals(highlight.type)) {
+                            printer.setItalizedString(p.value, p.x, p.y);
+                            printer.setItalizedString(highlight.description,
+                                    x + 1, y++);
 
-                    } else if (Type.Birthday.equals(highlight.type)) {
-                        reporter.setUnderlineString(p.value, p.x, p.y);
-                        reporter.setUnderlineString(highlight.description,
-                                x + 1, y++);
-                    } else {
-                        reporter.setBoldedString(p.value, p.x, p.y);
-                        reporter.setBoldedString(highlight.description, x + 1,
-                                y++);
+                        } else if (Type.Birthday.equals(highlight.type)) {
+                            printer.setUnderlineString(p.value, p.x, p.y);
+                            printer.setUnderlineString(highlight.description,
+                                    x + 1, y++);
+                        } else {
+                            printer.setBoldedString(p.value, p.x, p.y);
+                            printer.setBoldedString(highlight.description,
+                                    x + 1, y++);
+                        }
                     }
                 }
             } else {
-                reporter.setString(p.value, p.x, p.y);
+                printer.setString(p.value, p.x, p.y);
             }
             if (y > MAX_Y) {
                 y = 0;
                 x += 2;
-                reporter.setWidth(x + 1, 7500);
+                printer.setWidth(x + 1, 7500);
             }
         }
     }
 
-    void setWidthsForCalendarDates(ReportPrinter r) throws WrappedTargetException,
-            IndexOutOfBoundsException, UnknownPropertyException,
-            PropertyVetoException, IllegalArgumentException {
+    private String getDate(List<Point> pts, int x, String d) {
+        Point p = pts.get(x);
+        String end = "";
+        while (++x < pts.size()) {
+            Point n = pts.get(x);
+            if (n.isHighlighted()) {
+                for (Highlight h : n.getHighlights()) {
+                    if (h.description.equals(d)) {
+                        h.descriptionNotNeeded();
+                        end = n.value;
+                    }
+                }
+            } else {
+                break;
+            }
+        }
+        String string = p.month.toString().substring(0, 3) + " " + p.value;
+        if (!end.isEmpty()) {
+            string += "-" + end;
+        }
+        return string;
+    }
+
+    void setWidthsForCalendarDates(ReportPrinter r)
+            throws WrappedTargetException, IndexOutOfBoundsException,
+            UnknownPropertyException, PropertyVetoException,
+            IllegalArgumentException {
 
         for (int x = 0; x <= 7 * 3 + 1; x++) {
             r.setWidth(x, 500);

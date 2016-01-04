@@ -19,4 +19,12 @@ public class HighlightTest {
         assertTrue(Highlight.Type.Birthday.equals(h.type));
     }
 
+    @Test
+    public void testDisplayDescription() throws Exception {
+        Highlight h = new Highlight("Birthday");
+        assertTrue(h.displayDescription());
+        h.descriptionNotNeeded();
+        assertFalse(h.displayDescription());
+    }
+
 }

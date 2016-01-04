@@ -8,10 +8,12 @@ public class Highlight {
 
     public final Type type;
     public final String description;
+    private boolean displayDescription;
 
     public Highlight(String d, Type t) {
         description = d;
         type = t;
+        displayDescription = true;
     }
 
     public Highlight(String d) {
@@ -24,5 +26,13 @@ public class Highlight {
             type = Type.Birthday;
         }
         return type;
+    }
+    
+    public boolean displayDescription() {
+        return displayDescription;
+    }
+    
+    public void descriptionNotNeeded() {
+        displayDescription = false;
     }
 }

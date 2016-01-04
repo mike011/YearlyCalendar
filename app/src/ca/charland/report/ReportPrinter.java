@@ -22,6 +22,8 @@ import com.sun.star.lang.XMultiComponentFactory;
 import com.sun.star.sheet.XSpreadsheet;
 import com.sun.star.sheet.XSpreadsheetDocument;
 import com.sun.star.sheet.XSpreadsheets;
+import com.sun.star.style.ParagraphAdjust;
+import com.sun.star.table.CellHoriJustify;
 import com.sun.star.table.XCell;
 import com.sun.star.table.XColumnRowRange;
 import com.sun.star.table.XTableColumns;
@@ -40,6 +42,10 @@ public class ReportPrinter {
     private int dateFormat;
 
     public ReportPrinter() {
+        init();
+    }
+
+    void init() {
         String oooExeFolder = setLibreOfficeFolder();
 
         // get the remote office context. If necessary a new office
@@ -120,7 +126,7 @@ public class ReportPrinter {
         setFormula(date, x, y, dateFormat);
     }
 
-    private void setFormula(String formula, int x, int y, int format) {
+    void setFormula(String formula, int x, int y, int format) {
         XCell xCell = getCell(x, y);
         xCell.setFormula(formula);
         setFormat(x, y, format);
@@ -133,34 +139,40 @@ public class ReportPrinter {
     }
 
     void setBoldedString(String value, int x, int y) throws Exception {
-    	setString(value, x,y);
+        setString(value, x, y);
         XPropertySet xPropSet = getXPropSet(x, y);
         xPropSet.setPropertyValue("CharWeight", new Float(FontWeight.BOLD));
     }
 
     public void setItalizedString(String value, int x, int y) throws Exception {
-    	setString(value, x,y);
+        setString(value, x, y);
         XPropertySet xPropSet = getXPropSet(x, y);
         xPropSet.setPropertyValue("CharPosture", Font.ITALIC);
     }
 
     public void setUnderlineString(String value, int x, int y) throws Exception {
-    	setString(value, x,y);
+        setString(value, x, y);
         XPropertySet xPropSet = getXPropSet(x, y);
         xPropSet.setPropertyValue("CharUnderline", FontUnderline.SINGLE);
     }
-    
+
     public void setStikeout(int x, int y) throws Exception {
         XPropertySet xPropSet = getXPropSet(x, y);
         xPropSet.setPropertyValue("CharStrikeout", FontStrikeout.SINGLE);
     }
+    
 
-	private XPropertySet getXPropSet(int x, int y) {
-		XCell xCell = getCell(x, y);
+    public void rightAlign(int x, int y) throws Exception {
+        XPropertySet xPropSet = getXPropSet(x, y);
+        xPropSet.setPropertyValue("HoriJustify", CellHoriJustify.RIGHT);
+    }
+
+    private XPropertySet getXPropSet(int x, int y) {
+        XCell xCell = getCell(x, y);
         XPropertySet xPropSet = UnoRuntime.queryInterface(
-                com.sun.star.beans.XPropertySet.class, xCell);
-		return xPropSet;
-	}
+                XPropertySet.class, xCell);
+        return xPropSet;
+    }
 
     private void setFormat(int x, int y, int format) {
         XCell cell = getCell(x, y);
