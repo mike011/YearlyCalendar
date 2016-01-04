@@ -86,7 +86,7 @@ public class ReportPrinter {
         if (os.contains("Linux")) {
             return "/usr/lib/libreoffice/program";
         }
-        return "D:/Program Files (x86)/LibreOffice 4/program";
+        return "C:/Program Files (x86)/LibreOffice 5/program";
     }
 
     private void setKeyFormats() {

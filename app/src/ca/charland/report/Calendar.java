@@ -14,7 +14,7 @@ import ca.charland.report.Month.WeekDay;
 public class Calendar {
 
     private Map<MonthName, Month> days;
-    private Date today;
+    private final Date today;
 
     public Calendar() {
         this(new Date());
@@ -48,7 +48,7 @@ public class Calendar {
 
     private WeekDay addMonth(int startX, int startY, MonthName month,
             WeekDay firstDay) {
-        Month value = new Month(today, month, firstDay, startX, startY);
+        Month value = new Month(getToday(), month, firstDay, startX, startY);
         days.put(month, value);
         WeekDay dayOfMonth = value.getWeekDay(month.getDays()).getNextDay();
         return dayOfMonth;
@@ -101,5 +101,9 @@ public class Calendar {
             Month month = days.get(MonthName.values()[start.getMonth()]);
             month.highlight(start.getDate(), highlight);
         }
+    }
+
+    public Date getToday() {
+        return today;
     }
 }

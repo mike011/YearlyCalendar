@@ -1,5 +1,6 @@
 package ca.charland.report;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -130,9 +131,7 @@ public class ReportMaker {
                 List<Highlight> highlights = p.getHighlights();
                 for (Highlight highlight : highlights) {
                     if (highlight.displayDescription()) {
-                        printer.setDate(getDate(pts, i, highlight.description),
-                                x, y);
-                        printer.rightAlign(x, y);
+                        addDate(printer, pts, y, x, i, highlight, isOld);
                         addHighlight(printer, highlight.description, x+1, y++, highlight, isOld);
                     }
                     addHighlight(printer, p.value, p.x, p.y, highlight, isOld);
@@ -146,6 +145,21 @@ public class ReportMaker {
                 printer.setWidth(x + 1, 7500);
             }
         }
+        
+        
+        SimpleDateFormat formatter = new SimpleDateFormat("MMM dd");
+        Date today = calendar.getToday();
+        printer.setString("Printed On: " + formatter.format(today), 0, 34);
+    }
+
+    private void addDate(ReportPrinter printer, List<Point> pts, int y, int x,
+            int i, Highlight highlight, boolean isOld) throws Exception {
+        if(isOld) {
+            printer.setStrikeout(x, y);
+        }
+        printer.setDate(getDate(pts, i, highlight.description),
+                x, y);
+        printer.rightAlign(x, y);
     }
 
     private void addHighlight(ReportPrinter printer, String value, int x, int y,

@@ -248,6 +248,6 @@ public class ReportMakerTest {
         rm.highlightPoints();
         MyReporter reporter = new MyReporter();
         rm.addPointsToCalendar(reporter);
-        assertEquals(4, reporter.strikes);
+        assertEquals(5, reporter.strikes);
     }
 }
