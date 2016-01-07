@@ -24,13 +24,6 @@ public class ReportMakerTest {
     private static final Date DATE = new Date(0);
 
     @Test
-    public void getEventsFromFile() throws Exception {
-        ReportMaker rm = new ReportMaker(
-                ReportMaker.getEventsFromFile("./test/sample.csv"));
-        assertEquals(27, rm.getEvents().size());
-    }
-
-    @Test
     public void testHighlightOnePoint() throws Exception {
         Calendar calendar = new Calendar(DATE);
         List<Event> events = new ArrayList<Event>();
@@ -78,43 +71,6 @@ public class ReportMakerTest {
         List<Highlight> highlight = calendar.getHighlighted(MonthName.January,
                 2);
         assertEquals(Highlight.Type.StatutoryHoliday, highlight.get(0).type);
-    }
-
-    @Test
-    public void noEvents() throws Exception {
-        List<Event> events = new ArrayList<Event>();
-        List<String> ignoreList = new ArrayList<String>();
-        ReportMaker.removeIgnoredEvents(events, ignoreList);
-        assertTrue(events.isEmpty());
-    }
-
-    @Test
-    public void oneEvent() throws Exception {
-        List<Event> events = new ArrayList<Event>();
-        events.add(new Event("dog"));
-        List<String> ignoreList = new ArrayList<String>();
-        ReportMaker.removeIgnoredEvents(events, ignoreList);
-        assertEquals(1, events.size());
-    }
-
-    @Test
-    public void oneEventIgnored() throws Exception {
-        List<Event> events = new ArrayList<Event>();
-        events.add(new Event("dog"));
-        List<String> ignoreList = new ArrayList<String>();
-        ignoreList.add("dog");
-        ReportMaker.removeIgnoredEvents(events, ignoreList);
-        assertTrue(events.isEmpty());
-    }
-
-    @Test
-    public void oneEventIgnoredPartialMatch() throws Exception {
-        List<Event> events = new ArrayList<Event>();
-        events.add(new Event("dog"));
-        List<String> ignoreList = new ArrayList<String>();
-        ignoreList.add("do");
-        ReportMaker.removeIgnoredEvents(events, ignoreList);
-        assertTrue(events.isEmpty());
     }
 
     @Test

@@ -3,11 +3,9 @@ package ca.charland.report;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import ca.charland.calendar.Event;
-import ca.charland.io.LoadFile;
 import ca.charland.report.Highlight.Type;
 
 import com.sun.star.beans.PropertyVetoException;
@@ -36,35 +34,6 @@ public class ReportMaker {
     public ReportMaker(Calendar calendar, List<Event> events) {
         this.calendar = calendar;
         this.events = events;
-    }
-
-    static ArrayList<Event> getEventsFromFile(String eventsFilename) {
-        ArrayList<Event> events = getEvents(eventsFilename);
-        List<String> ignoreList = LoadFile.loadFile("./src/ignore.txt");
-        removeIgnoredEvents(events, ignoreList);
-        return events;
-    }
-
-    private static ArrayList<Event> getEvents(String eventsFilename) {
-        List<String> eventsFileContents = LoadFile.loadCSVFile(eventsFilename);
-        ArrayList<Event> events = new ArrayList<Event>();
-        for (int i = 1; i < eventsFileContents.size() - 1; i++) {
-            String s = eventsFileContents.get(i);
-            events.add(new Event(s));
-        }
-        return events;
-    }
-
-    static void removeIgnoredEvents(List<Event> events, List<String> ignoreList) {
-        Iterator<Event> i = events.iterator();
-        while (i.hasNext()) {
-            Event e = i.next();
-            for (String ignore : ignoreList) {
-                if (e.getTitle().contains(ignore)) {
-                    i.remove();
-                }
-            }
-        }
     }
 
     List<Event> getEvents() {
@@ -208,13 +177,5 @@ public class ReportMaker {
         for (int x = 0; x <= 7 * 3 + 1; x++) {
             r.setWidth(x, 500);
         }
-    }
-
-    public static void main(String args[]) throws Exception {
-        ReportMaker maker = new ReportMaker(getEventsFromFile(args[0]));
-        maker.highlightPoints();
-        ReportPrinter report = new ReportPrinter();
-        maker.setWidthsForCalendarDates(report);
-        maker.addPointsToCalendar(report);
     }
 }
