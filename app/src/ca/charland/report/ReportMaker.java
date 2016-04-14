@@ -99,7 +99,7 @@ public class ReportMaker {
             if (p.isHighlighted()) {                
                 List<Highlight> highlights = p.getHighlights();
                 for (Highlight highlight : highlights) {
-                    if (highlight.displayDescription()) {
+                    if (highlight.displayDescription() && !isOld) {
                         addDate(printer, pts, y, x, i, highlight, isOld);
                         addHighlight(printer, highlight.description, x+1, y++, highlight, isOld);
                     }

@@ -1,3 +1,4 @@
+Alberta
 Quebec
 British Columbia
 Nova Scotia
@@ -10,3 +11,8 @@ Manitoba
 New Brunswick
 Epiphany
 Jaybird
+iOS
+Tartan
+Vimy
+Commonwealth
+Westminster

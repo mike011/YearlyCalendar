@@ -89,8 +89,11 @@ public class Month {
     }
 
     @SuppressWarnings("deprecation")
-    private boolean getIsOld(int day) {
-        if (date.getMonth() >= name.ordinal()) {
+    boolean getIsOld(int day) {
+        if (date.getMonth() > name.ordinal()) {
+            return true;
+        }
+        if (date.getMonth() == name.ordinal()) {
             if (date.getDate() >= day) {
                 return true;
             }

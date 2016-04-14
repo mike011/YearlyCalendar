@@ -15,7 +15,7 @@ public class LoadFileTest {
 
     @Test
     public void testMultiLineEvent() throws Exception {
-        List<String> load = LoadFile.loadCSVFile("./test/sample2.csv");
+        List<String> load = LoadFile.loadCSVFile("E:/downloads/6c12bf61e114bbebb5b61c3d7dcbf464.csv");
         assertFalse(load.isEmpty());
         assertEquals(2, load.size());
     }

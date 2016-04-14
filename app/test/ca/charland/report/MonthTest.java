@@ -146,4 +146,24 @@ public class MonthTest {
         assertTrue("2nd", pts.get(x++).old);
         assertFalse("3rd", pts.get(x++).old);
     }
+
+    @Test
+    public void testGetIsOld() throws Exception {
+        Date d = new Date(0);
+        d.setMonth(0);
+        d.setDate(2);
+        Month m = new Month(d, MonthName.January, WeekDay.Sunday, 0, 0);
+        assertTrue("yesterday", m.getIsOld(1));
+        assertTrue("today", m.getIsOld(2));
+        assertFalse("tomorrow", m.getIsOld(3));
+    }
+    
+    @Test
+    public void testGetIsOldCurrentDayIsInPathMonth() throws Exception {
+        Date d = new Date(0);
+        d.setMonth(2);
+        d.setDate(15);
+        Month m = new Month(d, MonthName.January, WeekDay.Sunday, 0, 0);
+        assertTrue("less then one month ago", m.getIsOld(16));
+    }
 }

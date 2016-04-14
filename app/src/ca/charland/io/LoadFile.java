@@ -25,10 +25,15 @@ public class LoadFile {
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String strLine;
             while ((strLine = br.readLine()) != null) {
-                if (isCSV) {
-                    while (strLine.split("\",\"").length < 10) {
-                        strLine += br.readLine();
-                    }
+                if (isCSV) {                    
+//                    while (strLine.split("\",\"").length < 9) {
+//                        String splits[] = strLine.split("\",\"");
+//                        String newLine = br.readLine(); 
+//                        if(newLine == null) {
+//                            break;
+//                        }
+//                        strLine += newLine;
+//                    }
                 }
                 lines.add(strLine);
             }

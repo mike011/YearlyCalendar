@@ -17,7 +17,7 @@ public class YearlyCalendarTest {
     public void getEventsFromFile() throws Exception {
         ReportMaker rm = new ReportMaker(
                 YearlyCalendar.getEventsFromFile("./test/sample.csv"));
-        assertEquals(27, rm.getEvents().size());
+        assertEquals(22, rm.getEvents().size());
     }
     
     @Test
