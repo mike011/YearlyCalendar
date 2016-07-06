@@ -94,7 +94,7 @@ public class Month {
             return true;
         }
         if (date.getMonth() == name.ordinal()) {
-            if (date.getDate() >= day) {
+            if (date.getDate() -1 >= day) {
                 return true;
             }
         }

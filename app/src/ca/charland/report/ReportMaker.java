@@ -92,18 +92,17 @@ public class ReportMaker {
         int MAX_Y = 55;
         for (int i = 0; i < pts.size(); i++) {
             Point p = pts.get(i);
-            boolean isOld = p.old;
-            if(isOld) {
+            if(p.old) {
                 printer.setStrikeout(p.x, p.y);
             }
             if (p.isHighlighted()) {                
                 List<Highlight> highlights = p.getHighlights();
                 for (Highlight highlight : highlights) {
-                    if (highlight.displayDescription() && !isOld) {
-                        addDate(printer, pts, y, x, i, highlight, isOld);
-                        addHighlight(printer, highlight.description, x+1, y++, highlight, isOld);
+                    if (highlight.displayDescription() && !p.old) {
+                        addDate(printer, pts, y, x, i, highlight, p.old);
+                        addHighlight(printer, highlight.description, x+1, y++, highlight, p.old);
                     }
-                    addHighlight(printer, p.value, p.x, p.y, highlight, isOld);
+                    addHighlight(printer, p.value, p.x, p.y, highlight, p.old);
                 }
             } else {
                 printer.setString(p.value, p.x, p.y);
