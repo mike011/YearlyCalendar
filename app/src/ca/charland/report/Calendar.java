@@ -55,7 +55,7 @@ public class Calendar {
     }
 
     private void addFirstRow() {
-        addRow(0, 0, MonthName.January, WeekDay.Friday);
+        addRow(0, 0, MonthName.January, WeekDay.Sunday);
     }
 
     private void addRow(int startY, MonthName month) {

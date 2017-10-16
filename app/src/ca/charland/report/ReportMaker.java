@@ -45,10 +45,15 @@ public class ReportMaker {
             String title = e.getTitle();
             if (e.getDuration().getHour() < 24 && e.getStart() != null
                     && e.getEnd() != null) {
-                String time = getTime(e.getStart());
-                time += '-';
-                time += getTime(e.getEnd());
-                title = time + ' ' + title;
+                String start = getTime(e.getStart());
+                String end = getTime(e.getEnd());
+                String time = "";
+                if (!start.equals(end)) {
+                    time = start;
+                    time += '-';
+                    time += end;
+                    title = time + ' ' + title;
+                }                
             }
             Highlight highlight = new Highlight(title);
             if (e.getCreatedBy().equals("Holidays in Canada")) {
@@ -92,15 +97,16 @@ public class ReportMaker {
         int MAX_Y = 55;
         for (int i = 0; i < pts.size(); i++) {
             Point p = pts.get(i);
-            if(p.old) {
+            if (p.old) {
                 printer.setStrikeout(p.x, p.y);
             }
-            if (p.isHighlighted()) {                
+            if (p.isHighlighted()) {
                 List<Highlight> highlights = p.getHighlights();
                 for (Highlight highlight : highlights) {
                     if (highlight.displayDescription() && !p.old) {
                         addDate(printer, pts, y, x, i, highlight, p.old);
-                        addHighlight(printer, highlight.description, x+1, y++, highlight, p.old);
+                        addHighlight(printer, highlight.description, x + 1, y++,
+                                highlight, p.old);
                     }
                     addHighlight(printer, p.value, p.x, p.y, highlight, p.old);
                 }
@@ -113,8 +119,7 @@ public class ReportMaker {
                 printer.setWidth(x + 1, 7500);
             }
         }
-        
-        
+
         SimpleDateFormat formatter = new SimpleDateFormat("MMM dd");
         Date today = calendar.getToday();
         printer.setString("Printed On: " + formatter.format(today), 0, 34);
@@ -122,17 +127,16 @@ public class ReportMaker {
 
     private void addDate(ReportPrinter printer, List<Point> pts, int y, int x,
             int i, Highlight highlight, boolean isOld) throws Exception {
-        if(isOld) {
+        if (isOld) {
             printer.setStrikeout(x, y);
         }
-        printer.setDate(getDate(pts, i, highlight.description),
-                x, y);
+        printer.setDate(getDate(pts, i, highlight.description), x, y);
         printer.rightAlign(x, y);
     }
 
     private void addHighlight(ReportPrinter printer, String value, int x, int y,
             Highlight highlight, boolean isOld) throws Exception {
-        if(isOld) {
+        if (isOld) {
             printer.setStrikeout(x, y);
         }
         if (Type.StatutoryHoliday.equals(highlight.type)) {

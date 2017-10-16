@@ -66,11 +66,16 @@ public class Event {
             return new Time(0, 0);
         }
         String[] splits = d.split(":");
-        int hour = Integer.valueOf(splits[0]);
-        if (hour >= 24) {
-            allDay = true;
+        try {
+            int hour = Integer.valueOf(splits[0]);
+            if (hour >= 24) {
+                allDay = true;
+            }
+            return new Time(hour, Integer.valueOf(splits[1]));
+        } catch (NumberFormatException nfe) {
+            nfe.printStackTrace();
+            return null;
         }
-        return new Time(hour, Integer.valueOf(splits[1]));
     }
 
     private String getString(Name n) {
